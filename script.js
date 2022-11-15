@@ -1,25 +1,27 @@
-/* Compra en cuotas con y sin interes:
-1 y 3 cuotas sin interes
-6 cuotas con un interes del 15% 
-12 cuotas con un interes del 30%
-18 cuotas con un interes del 50%
-*/
-let total = parseInt(prompt("Ingrese monto a pagar"))
-let cantidaddecuotas
+const pedidos = [
+    { id: 0, titulo: "Combo Mundial", tipoDeComida: "Salada", precio: 2500 },
+    { id: 1, titulo: "Pizza", tipoDeComida: "Salada", precio: 1200 },
+    { id: 2, titulo: "Hambuerguesa", tipoDeComida: "Salada", precio: 1500 },
+    { id: 3, titulo: "Papas Fritas", tipoDeComida: "Salada", precio: 550 },
+    { id: 4, titulo: "Pastas", tipoDeComida: "Salada", precio: 1600 },
+    { id: 5, titulo: "Milanesa", tipoDeComida: "Salada", precio: 1050 },
+    { id: 6, titulo: "Falafel", tipoDeComida: "Salada", precio: 760 },
+    { id: 7, titulo: "Helado", tipoDeComida: "Dulce", precio: 1250 },
+    { id: 8, titulo: "Tarta de Frutilla", tipoDeComida: "Dulce", precio: 890 },
+    { id: 9, titulo: "Cookies", tipoDeComida: "Dulce", precio: 500 },]
 
+let opciones = "Elegí la opcion que más te guste: "
 
-do {
-    cantidaddecuotas = parseInt(prompt("Ingrese cantidad de cuotas 1, 3, 6, 12 o 18"))
+for(const pedido of pedidos) {
+    opciones = opciones + "\n" + "-" + pedido.id + "  " + pedido.titulo }
 
-    if (cantidaddecuotas === 1) {
-        alert("El total es: $ " + total)
-    } else if (cantidaddecuotas === 1) {
-        alert("El total es: $ " + total) 
-    } else if (cantidaddecuotas === 6) {
-        alert("El total es: $" + (total * 1.15))
-    } else if (cantidaddecuotas === 12) {
-        alert("El total es: $" + (total * 1.3))
-    } else if (cantidaddecuotas === 18) {
-        alert("El total es: $" + (total * 1.5))
-    }
-} while (cantidaddecuotas !=1 && cantidaddecuotas !=3 && cantidaddecuotas !=6 && cantidaddecuotas !=12 && cantidaddecuotas !=18);
+let pedidoARealizar = prompt( opciones + "\n" + "Ingrese N° de la comida deseada:")
+let filtro = pedidos.filter(pedido => pedido.id == (pedidoARealizar))
+
+if (filtro.length <= 13) {
+    let aMostrar = filtro.map(
+        (aMostrar) => aMostrar.titulo + " " + "$" + aMostrar.precio + ". " + "Tipo de comida: " + aMostrar.tipoDeComida)
+    alert("Estos son los pedidos realizados al momento")
+    let conexion = aMostrar.join(", ")
+    alert(conexion)
+} else (alert("ERROR"))

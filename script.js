@@ -1,22 +1,11 @@
-const productos = [
-    { id: 0, categoria: "Combos", titulo: "Combo Mundial", stock: 100, precio: 3500, img: "./img/combo.png" },
-    { id: 1, categoria: "Pinto", titulo: "Pizza", stock: 40, precio: 1200, img: "./img/pizza.png" },
-    { id: 2, categoria: "Pinto", titulo: "Hamburguesa", stock: 60, precio: 2100, img: "./img/hamburguesa.png" },
-    { id: 3, categoria: "Bebidas", titulo: "x2 Pintas", stock: 202, precio: 700, img: "./img/pinta.png" },
-    { id: 4, categoria: "P-Compartir", titulo: "Pastas", stock: 37, precio: 1500, img: "./img/pastas.png" },
-    { id: 5, categoria: "P-Compartir", titulo: "Rabas", stock: 45, precio: 820, img: "./img/rabas.png" },
-    { id: 6, categoria: "Pinto", titulo: "Lomo con papas", stock: 26, precio: 2900, img: "./img/lomo.png" },
-    { id: 7, categoria: "Pinto", titulo: "Falafel", stock: 15, precio: 900, img: "./img/falafel.png" }]
+let carritoCompra = JSON.parse(localStorage.getItem('carrito'))?.length > 0 ? JSON.parse(localStorage.getItem('carrito')) : []
+JSON.parse(localStorage.getItem('carrito'))?.length > 0 ? JSON.parse(localStorage.getItem('carrito')) : localStorage.setItem('carrito', JSON.stringify(carritoCompra))
 
-let carritoCompra = JSON.parse(localStorage.getItem('carrito'))?.length > 0 ? JSON.parse(localStorage.getItem('carrito')): []
-JSON.parse(localStorage.getItem('carrito'))?.length > 0 ? JSON.parse(localStorage.getItem('carrito')): localStorage.setItem('carrito', JSON.stringify(carritoCompra))
+let filtrados = JSON.parse(localStorage.getItem('filtrado'))?.length > 0 ? JSON.parse(localStorage.getItem('filtrado')) : []
+JSON.parse(localStorage.getItem('filtrado'))?.length > 0 ? JSON.parse(localStorage.getItem('filtrado')) : localStorage.setItem('filtrado', JSON.stringify(filtrados))
 
-let filtrados = JSON.parse(localStorage.getItem('filtrado'))?.length > 0 ? JSON.parse(localStorage.getItem('filtrado')): []
-JSON.parse(localStorage.getItem('filtrado'))?.length > 0 ? JSON.parse(localStorage.getItem('filtrado')): localStorage.setItem('filtrado', JSON.stringify(filtrados))
-
-
-let paginaActual = localStorage.getItem('page')?.length > 0 ? localStorage.getItem('page'): 'home'
-localStorage.getItem('page')?.length > 0 ? localStorage.getItem('page'): localStorage.setItem('page', (paginaActual))
+let paginaActual = localStorage.getItem('page')?.length > 0 ? localStorage.getItem('page') : 'home'
+localStorage.getItem('page')?.length > 0 ? localStorage.getItem('page') : localStorage.setItem('page', (paginaActual))
 
 let contenedorCaja = document.createElement("div")
 document.body.append(contenedorCaja)
@@ -42,10 +31,10 @@ let menuUl = document.createElement("ul")
 encabezado.append(menuUl)
 menuUl.innerHTML = ` 
 <li><button id="TLP" class="bt-menu bt-categoria active" onclick=botonProductos()>Todos los productos</button></li>
-<li><button id="Combos" class="bt-menu bt-categoria" onclick=filtradoCategorias("Combos") >Combos</button></li>
-<li><button id="Para Compartir" class="bt-menu bt-categoria" onclick=filtradoCategorias("P-Compartir") >Para Compartir</button></li>
-<li><button id="Pinto" class="bt-menu bt-categoria" onclick=filtradoCategorias("Pinto") >Lo que Pintó</button></li>
-<li><button id="Bebidas" class="bt-menu bt-categoria" onclick=filtradoCategorias("Bebidas") >Bebidas</button></li>
+<li><button id="Combos" class="bt-menu bt-categoria" onclick=filtradoCategorias("combos") >Combos</button></li>
+<li><button id="Para Compartir" class="bt-menu bt-categoria" onclick=filtradoCategorias("p-compartir") >Para Compartir</button></li>
+<li><button id="Pinto" class="bt-menu bt-categoria" onclick=filtradoCategorias("pinto") >Lo que Pintó</button></li>
+<li><button id="Bebidas" class="bt-menu bt-categoria" onclick=filtradoCategorias("bebidas") >Bebidas</button></li>
 <li> <button class="bt-menu bt-carrito" onclick=carritoCompras()>Carrito</button></li> `
 
 let contenedorMain = document.createElement("main")
@@ -56,6 +45,7 @@ listaProductos.setAttribute("class", "contenedorLista")
 contenedorMain.append(listaProductos)
 
 function agregarProductos(arrayProductos) {
+    borrarTodo.remove()
     listaProductos.remove()
     listaProductos = document.createElement("ul")
     listaProductos.setAttribute("class", "contenedorLista")
@@ -75,38 +65,65 @@ function agregarProductos(arrayProductos) {
     }
 }
 
-function agregarAlCarrito(id) {
+async function agregarAlCarrito(id) {
+    let producto =await fetch(`https://mesquite-bramble-armadillo.glitch.me/products/${id}`)
+    producto = await producto.json()
     let existe = carritoCompra.some(el => el.id === id)
     if (existe) {
-       return alert("El producto ya se encuentra en el carrito")
-    }else {
-        let guardado = productos.find(el => el.id == id)
-        carritoCompra.push(guardado)
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'El producto ya se encuentra en el carrito',
+            footer: '<a href="">Why do I have this issue?</a>'
+          })
+    } else {
+        carritoCompra.push(producto)
         localStorage.setItem('carrito', JSON.stringify(carritoCompra))
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Producto agregado correctamente',
+            showConfirmButton: false,
+            timer: 1500
+          })
     }
-    
-}
 
+}
+let borrarTodo = document.createElement("button")
 function carritoCompras() {
+    if (borrarTodo) {
+        borrarTodo.remove()
+    }
     listaProductos.remove()
     listaProductos = document.createElement("ul")
-    listaProductos.setAttribute("class", "contenedorLista")
+    listaProductos.setAttribute("class", "carrito-contenedorLista")
     contenedorMain.append(listaProductos)
     for (const producto of carritoCompra) {
         let elementoLi = document.createElement("li")
         listaProductos.append(elementoLi)
-        elementoLi.innerHTML = `<div class="product">
-        <img class="img" src="${producto.img}" alt="${producto.titulo}">
-        <div class="producto">
-            <h3 class="titulo"> ${producto.titulo} </h3>
-            <p class="precio"> $${producto.precio} </p>
+        elementoLi.innerHTML = `<div class="carrito-product">
+        <img class="carrito-img" src="${producto.img}" alt="${producto.titulo}">
+        <div class="carrito-producto">
+            <h3 class="carrito-titulo"> ${producto.titulo} </h3>
+            <p class="carrito-precio"> $${producto.precio} </p>
             <button class="quitar" onclick= quitarDelCarrito(${producto.id})> Quitar del Carrito </button>
         </div>
     </div>
     `
     }
     localStorage.setItem('page', 'carrito')
+    borrarTodo.innerText = 'Borrar Todo'
+    borrarTodo.setAttribute('class', 'btn')
+    borrarTodo.setAttribute('onclick', 'borrarCarrito()')
+    contenedorMain.append(borrarTodo)
 }
+
+function borrarCarrito() {
+    carritoCompra=[]
+    localStorage.setItem('carrito', JSON.stringify(carritoCompra))
+    carritoCompras()
+}
+
 
 function quitarDelCarrito(id) {
     carritoCompra = carritoCompra.filter(el => el.id != id)
@@ -114,23 +131,36 @@ function quitarDelCarrito(id) {
     carritoCompras()
 }
 
-function filtradoCategorias(categoria) {
-    filtrados = productos.filter(el => el.categoria == categoria)
+async function filtradoCategorias(categoria) {
+    filtrados = await fetch(`https://mesquite-bramble-armadillo.glitch.me/category/${categoria}`)
+    filtrados = await filtrados.json()
     localStorage.setItem('filtrado', JSON.stringify(filtrados))
     agregarProductos(filtrados)
     localStorage.setItem('page', 'filtrado')
 }
 
-function funcionLupa() {
-    let x = productos.filter(el => el.titulo.toLowerCase().includes(buscador.value))
-    agregarProductos(x)
+async function funcionLupa() {
+    let productos =await fetch('https://mesquite-bramble-armadillo.glitch.me/products')
+    productos = await productos.json()
+    productos = productos.filter(el => el.titulo.toLowerCase().includes(buscador.value))
+    agregarProductos(productos)
 }
 
-function botonProductos() {
+async function botonProductos() {
+    let productos =await fetch('https://mesquite-bramble-armadillo.glitch.me/products')
+    productos = await productos.json()
     agregarProductos(productos)
     localStorage.setItem('page', 'home')
 }
 
-if (paginaActual == 'home') agregarProductos(productos)
-if (paginaActual == 'carrito') carritoCompras()
-if (paginaActual == 'filtrado') agregarProductos(filtrados)
+async function go() {
+    let productos =await fetch('https://mesquite-bramble-armadillo.glitch.me/products')
+    productos = await productos.json()
+    console.log(productos);
+
+    if (paginaActual == 'home') agregarProductos(productos)
+    if (paginaActual == 'carrito') carritoCompras()
+    if (paginaActual == 'filtrado') agregarProductos(filtrados)
+}
+
+go()

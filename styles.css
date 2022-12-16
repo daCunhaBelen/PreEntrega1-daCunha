@@ -131,6 +131,24 @@ main {
     transition: background-color .3s, color .3s;
 }
 
+.quitar{
+        font-size: 0.8rem;
+        filter: drop-shadow(4px 4px 2px rgb(182, 174, 174));
+        font-family: 'Montserrat', sans-serif;
+        color: rgb(111, 107, 107);
+        border: 2px solid white;
+        border-radius: 1rem;
+        margin: 0rem 2rem 0 2rem;
+        padding: 0.25rem;
+        cursor: pointer; 
+}
+
+.quitar:hover {
+    background-color: red;
+    color: white;
+    transition: background-color .3s, color .3s;
+}
+
 .precio {
     margin-top: 0.35rem;
 }
@@ -152,127 +170,63 @@ main {
     justify-content: right;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* body {
-    background-image: url(./img/img-01.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
+/* ESTILOS DE CARRITO DE COMPRAS */
+.carrito-contenedorLista{
+    display: flex;
+    flex-direction: column;
 }
 
-h1 {
+.carrito-product{
     display: flex;
-    justify-content: left;
-    filter: drop-shadow(4px 4px 2px rgb(182, 174, 174));
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    background-color: #e8e5e6b6;
+    width: 870px;
+    height: 200px;
+    border-radius: 2rem;
+
+}
+
+.carrito-producto{
+    display: flex;
+}
+
+.carrito-img{
+    max-width: 7rem;
+    border-radius: 1rem;
+    display: flex;
+    margin: 0rem 2rem 0 2rem;
+}
+
+.carrito-titulo{
+margin: 0rem 2rem 0 2rem;
+padding: 1rem;
+color: rgb(111, 107, 107);
+}
+
+.carrito-precio{
+margin: 0rem 2rem 0 2rem;
+color: rgb(111, 107, 107);
+padding: 1rem;
+;
+}
+
+.btn{
+        font-size: 0.8rem;
+        filter: drop-shadow(4px 4px 2px rgb(182, 174, 174));
+        font-family: 'Montserrat', sans-serif;
+        color: rgb(111, 107, 107);
+        border: 2px solid white;
+        border-radius: 1rem;
+        margin: 3em 2rem 0 2rem;
+        padding: 0.5rem;
+        cursor: pointer; 
+        justify-items: right;
+}
+
+.btn:hover {
+    background-color: rgb(73, 2, 2);
     color: white;
-    font-size: 7rem;
-    font-weight: bold;
-    font-family: 'Qwitcher Grypen', cursive;
-    margin-left: 1rem;
+    transition: background-color .3s, color .3s;
 }
-
-.caja {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.card {
-    border: 1px solid rgb(232, 9, 9);
-    justify-content: center;
-    width: 15rem;
-    height: 20rem;
-    margin: 2rem 3rem 2rem 3rem;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    justify-content: space-evenly;
-}
-
-.pocasUnidades {
-    background-color: yellow;
-    display: flex;
-    border: 1px solid grey;
-    width: 45rem;
-    height: 15rem;
-    padding: 1rem;
-    margin: 1rem;
-    background-color: crimson;
-}
-
-.list {
-    list-style: none;
-    text-align: center;
-}
-
-.img {
-    width: 10rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-}
-
-.button {
-    border-radius: 20%;
-    height: 3rem;
-    width: 5.5rem;
-    cursor: pointer;
-    background-color: rgb(182, 174, 174);
-    padding: 0.5rem;
-    margin: 0.3rem;
-    border: 1px solid lightgrey;
-} */
